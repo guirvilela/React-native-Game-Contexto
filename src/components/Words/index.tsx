@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {
   getBarWidth,
   getColorDistantece,
@@ -9,33 +9,54 @@ import {Container, Word, WordContainer} from './styles';
 
 interface IWordsProps {
   words: IWordType[];
+  lastWord?: IWordType;
 }
 
-const Words: React.FC<IWordsProps> = ({words}) => {
+const Words: React.FC<IWordsProps> = ({words, lastWord}) => {
   return (
-    <ScrollView style={{marginTop: 15}}>
-      {words?.length > 0 &&
-        words
-          .sort((a, b) => a.distance - b.distance)
-          .map(({word, distance}) => (
-            <Container key={distance}>
-              <View
-                style={{
-                  width: getBarWidth(distance),
-                  position: 'absolute',
-                  height: '100%',
-                  backgroundColor: getColorDistantece(distance),
-                  borderRadius: 3,
-                }}
-              />
+    <>
+      {lastWord && (
+        <View style={{marginVertical: 10}}>
+          <Container>
+            <View
+              style={{
+                width: getBarWidth(lastWord?.distance),
+                position: 'absolute',
+                height: '100%',
+                backgroundColor: getColorDistantece(lastWord.distance),
+                borderRadius: 3,
+              }}
+            />
+            <WordContainer>
+              <Word>{lastWord.word}</Word>
+              <Word>{lastWord.distance + 1}</Word>
+            </WordContainer>
+          </Container>
+        </View>
+      )}
 
-              <WordContainer>
-                <Word>{word}</Word>
-                <Word>{distance + 1}</Word>
-              </WordContainer>
-            </Container>
-          ))}
-    </ScrollView>
+      <FlatList
+        data={words?.sort((a, b) => a.distance - b.distance)}
+        keyExtractor={item => `${item.word}-${item.distance}`}
+        renderItem={({item}) => (
+          <Container>
+            <View
+              style={{
+                width: getBarWidth(item.distance),
+                position: 'absolute',
+                height: '100%',
+                backgroundColor: getColorDistantece(item.distance),
+                borderRadius: 3,
+              }}
+            />
+            <WordContainer>
+              <Word>{item.word}</Word>
+              <Word>{item.distance + 1}</Word>
+            </WordContainer>
+          </Container>
+        )}
+      />
+    </>
   );
 };
 

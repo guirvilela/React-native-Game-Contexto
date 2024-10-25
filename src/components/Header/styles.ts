@@ -1,5 +1,9 @@
 import styled from 'styled-components/native';
 
+interface HeaderButtonProps{
+  side: 'left' | 'right'
+}
+
 export const Container = styled.View`
   position: relative;
 `;
@@ -23,15 +27,20 @@ export const GameId = styled.Text`
   font-size: 20px;
 `;
 
-export const Button = styled.TouchableOpacity`
+export const Button = styled.TouchableOpacity<HeaderButtonProps>`
   background: ${props => props.theme.colors.green};
   padding: 5px;
   border-radius: 8px;
   width: 50px;
   position: absolute;
-  right: 0;
+  z-index: 1;
+
+  
+  ${({ side }) => side === 'right' ? 'right: 0;' : 'left: 0;'}
+
   top: 30%;
 `;
+
 
 export const TextButton = styled.Text`
   text-align: center;

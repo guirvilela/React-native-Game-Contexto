@@ -1,3 +1,4 @@
+import {Link} from '@react-navigation/native';
 import React from 'react';
 import {
   Button,
@@ -9,21 +10,38 @@ import {
 } from './styles';
 
 interface IHeader {
-  gameId: number;
+  gameId?: number;
   btnTip: boolean;
+  btnRefresh: boolean;
   handleNewTip: () => void;
+  handleRefreshGame: () => void;
   loading?: boolean;
 }
 
-const Header: React.FC<IHeader> = ({gameId, btnTip, handleNewTip, loading}) => {
+const Header: React.FC<IHeader> = ({
+  gameId,
+  btnTip,
+  btnRefresh,
+  handleNewTip,
+  handleRefreshGame,
+  loading,
+}) => {
   return (
     <Container>
+      {btnRefresh && (
+        <Button onPress={handleRefreshGame} disabled={loading} side="left">
+          <TextButton> 🔃</TextButton>
+        </Button>
+      )}
+
       <ContextText>
-        <LetterC>C</LetterC>ontexto - <GameId>#{gameId}</GameId>
+        <Link to="/Welcome">
+          <LetterC>C</LetterC>ontexto <GameId>{gameId && `#${gameId}`}</GameId>
+        </Link>
       </ContextText>
 
       {btnTip && (
-        <Button onPress={handleNewTip} disabled={loading}>
+        <Button onPress={handleNewTip} disabled={loading} side="right">
           <TextButton> &#x1F4A1;</TextButton>
         </Button>
       )}

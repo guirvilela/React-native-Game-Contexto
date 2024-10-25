@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const Words = styled.Text`
-  color: #fff;
+  color: ${props => props.theme.colors.white};
   font-size: 18px;
   flex: 1;
   text-align: center;

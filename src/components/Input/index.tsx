@@ -4,15 +4,19 @@ import {Container, ContainerInput} from './styles';
 
 interface InputProps {
   handleSendText: (text: string) => void;
+  disabled: boolean;
 }
 
-const Input: React.FC<InputProps> = ({handleSendText}) => {
+const Input: React.FC<InputProps> = ({handleSendText, disabled}) => {
   const [word, setWord] = useState<string>();
   return (
     <Container>
       <ContainerInput
         placeholderTextColor={theme.colors.white}
-        placeholder="Digite uma palavra"
+        placeholder={
+          disabled ? 'Você acertou, inicie outro jogo' : 'Digite uma palavra'
+        }
+        editable={!disabled}
         onSubmitEditing={() => {
           if (word) {
             handleSendText(word);
